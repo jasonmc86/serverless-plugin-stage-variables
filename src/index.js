@@ -35,13 +35,17 @@ module.exports = Class.extend({
       StageName: `${stage}na`,
     }
 
+    var restApiId = this._serverless.service.provider.apiGateway && this._serverless.service.provider.apiGateway.restApiId
+      ? this._serverless.service.provider.apiGateway.restApiId
+      : {"Ref": "ApiGatewayRestApi"};
+
     // create a stage resource, which sets the stage and variables correctly
     var stageConfig = {
       Type: "AWS::ApiGateway::Stage",
       Properties: {
         StageName: stage,
         Description: stage,
-        RestApiId: {"Ref": "ApiGatewayRestApi"},
+        RestApiId: restApiId,
         DeploymentId: null,
         Variables: variables,
       }
